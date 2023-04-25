@@ -1,6 +1,23 @@
 #include "main.h"
 
 /**
+ * _puts - Prints a string followed by newline
+ * @s: string to print
+ * Return: Nothing (void function).
+ */
+void _puts(char *s)
+{
+	int i = 0;
+
+	while (s[i] != '\0')
+	{
+		_putchar(s[i]);
+		i++;
+	}
+	_putchar('\n');
+}
+
+/**
  * _putchar - writes the character c to stdout
  * @c: The character to print
  *
@@ -19,5 +36,13 @@ int _putchar(char c)
  */
 int main(void)
 {
+	pid_t pid;
+
+	while (1)
+	{
+		_puts("#cisfun$ ");
+		break;
+	}
+
 	return (0);
 }
