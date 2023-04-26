@@ -73,23 +73,43 @@ void free2darr(char **arr)
  */
 int main(int argc, char *argv[])
 {
-	char *line;
-	char **args;
+	char *line = NULL;
+	char **args = NULL;
+	int interactive = isatty(STDIN_FILENO);
 
-	while (1)
+	if (argc == 1)
 	{
-		_sputs("#cisfun$ ");
+		while (1)
+		{
+			if (interactive)
+				_sputs("#cisfun$ ");
+			line = read_commands();
+			if (!line)
+			{
+				if (interactive)
+					_putchar('\n');
+				break;
+			}
+			args = _strsplit(line);
+			if (args[0] != NULL)
+				execute_command(args, argv[0]);
+			free2darr(args);
+			free(args);
+			if (!interactive)
+				_sputs("#cisfun$ ");
+		}
+	}
+	else
+	{
 		line = read_commands();
 		if (!line)
-		{
-			_putchar('\n');
-			break;
-		}
+			return (1);
 		args = _strsplit(line);
-		if (argc > 0)
+		if (args[0] != NULL)
 			execute_command(args, argv[0]);
 		free2darr(args);
 		free(args);
 	}
+
 	return (0);
 }
