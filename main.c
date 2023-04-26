@@ -9,9 +9,39 @@ char *read_commands()
 {
 	char *line = NULL;
 	size_t bufsize = 0;
+	int i = 0, j = 0;
+	int is_exit = -1;
+	char ex[] = "exit";
 
 	if (getline(&line, &bufsize, stdin) == -1)
 		return (NULL);
+	while (line[i] != '\0' && line[i] != 10)
+	{
+		if (line[i] == ex[0] && is_exit == -1)
+		{
+			is_exit = 1;
+			j = 0;
+			while (ex[j] != '\0')
+			{
+				if (ex[j] != line[i + j])
+				{
+					is_exit = 0;
+					break;
+				}
+				j++;
+			}
+			i += j;
+		}
+		if (line[i] != ' ' && line[i] != '\t' &&
+			line[i] != 10 && is_exit == 1 && line[i] != '\0')
+		{
+			is_exit = 0;
+			break;
+		}
+		i++;
+	}
+	if (is_exit == 1)
+		exit(0);
 	return (line);
 }
 
