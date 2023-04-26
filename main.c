@@ -62,7 +62,7 @@ int execute_command(char **args, char *prog_name)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(args[0], args, NULL) == -1)
+		if (execve(args[0], args, environ) == -1)
 			perror(prog_name);
 		exit(EXIT_FAILURE);
 	}

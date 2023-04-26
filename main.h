@@ -10,6 +10,8 @@
 
 #define BUFFER_SIZE 1024
 
+extern char **environ;
+
 int _putchar(char c);
 void _puts(char *s);
 void _sputs(char *s);
