@@ -139,6 +139,7 @@ int main(int argc, char *argv[])
 				break;
 			}
 			args = _strsplit(line);
+			free(line);
 			if (args[0] != NULL)
 				execute_command(args, argv[0]);
 			free2darr(args);
@@ -151,6 +152,7 @@ int main(int argc, char *argv[])
 		if (!line)
 			return (1);
 		args = _strsplit(line);
+		free(line);
 		if (args[0] != NULL)
 			execute_command(args, argv[0]);
 		free2darr(args);
