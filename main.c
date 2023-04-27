@@ -79,7 +79,7 @@ char *get_command_path(char *command)
 int execute_command(char **args, char *prog_name)
 {
 	pid_t pid;
-	int status;
+	int status = 0;
 
 	if (args[0] == NULL)
 		return (1);
@@ -87,7 +87,9 @@ int execute_command(char **args, char *prog_name)
 	if (pid == 0)
 	{
 		if (execve(args[0], args, environ) == -1)
+		{
 			perror(prog_name);
+		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
@@ -100,8 +102,7 @@ int execute_command(char **args, char *prog_name)
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
-
-	return (1);
+	return WEXITSTATUS(status);
 }
 
 /**
@@ -129,6 +130,7 @@ int main(int argc, char *argv[])
 {
 	char *line = NULL;
 	char **args = NULL;
+	int status = 0;
 	int interactive = isatty(STDIN_FILENO);
 
 	if (argc == 1)
@@ -147,7 +149,7 @@ int main(int argc, char *argv[])
 			args = _strsplit(line);
 			free(line);
 			if (args[0] != NULL)
-				execute_command(args, argv[0]);
+				status = execute_command(args, argv[0]);
 			free2darr(args);
 			free(args);
 		}
@@ -160,10 +162,10 @@ int main(int argc, char *argv[])
 		args = _strsplit(line);
 		free(line);
 		if (args[0] != NULL)
-			execute_command(args, argv[0]);
+			status = execute_command(args, argv[0]);
 		free2darr(args);
 		free(args);
 	}
 
-	return (0);
+	return (status);
 }
