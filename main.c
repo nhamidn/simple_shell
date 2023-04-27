@@ -7,11 +7,9 @@
  */
 char *read_commands(int status)
 {
-	char *line = NULL;
+	char *line = NULL, ex[] = "exit";
 	size_t bufsize = 0;
-	int i = 0, j = 0;
-	int is_exit = -1;
-	char ex[] = "exit";
+	int i = 0, j = 0, is_exit = -1;
 
 	if (getline(&line, &bufsize, stdin) == -1)
 	{
@@ -102,7 +100,7 @@ int execute_command(char **args, char *prog_name)
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
-	return WEXITSTATUS(status);
+	return (WEXITSTATUS(status));
 }
 
 /**
