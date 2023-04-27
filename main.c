@@ -147,22 +147,18 @@ int main(int argc, char *argv[])
 			args = _strsplit(line);
 			free(line);
 			if (args[0] != NULL)
-				status = execute_command(args, argv[0]);
+			{
+				if (_strcmp(args[0], "env") == 0)
+				{
+					print_env();
+					status = 0;
+				}
+				else
+					status = execute_command(args, argv[0]);
+			}
 			free2darr(args);
 			free(args);
 		}
-	}
-	else
-	{
-		line = read_commands(status);
-		if (!line)
-			return (1);
-		args = _strsplit(line);
-		free(line);
-		if (args[0] != NULL)
-			status = execute_command(args, argv[0]);
-		free2darr(args);
-		free(args);
 	}
 
 	return (status);
