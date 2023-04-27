@@ -41,7 +41,10 @@ char *read_commands()
 		i++;
 	}
 	if (is_exit == 1)
+	{
+		free(line);
 		exit(0);
+	}
 	return (line);
 }
 
