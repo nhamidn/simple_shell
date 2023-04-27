@@ -14,7 +14,10 @@ char *read_commands()
 	char ex[] = "exit";
 
 	if (getline(&line, &bufsize, stdin) == -1)
+	{
+		free(line);
 		return (NULL);
+	}
 	while (line[i] != '\0' && line[i] != 10)
 	{
 		if (line[i] == ex[0] && is_exit == -1)
