@@ -33,7 +33,7 @@ char *read_commands()
 			i += j;
 		}
 		if (line[i] != ' ' && line[i] != '\t' &&
-			line[i] != 10 && is_exit == 1 && line[i] != '\0')
+				line[i] != 10 && is_exit == 1 && line[i] != '\0')
 		{
 			is_exit = 0;
 			break;
@@ -44,6 +44,24 @@ char *read_commands()
 		exit(0);
 	return (line);
 }
+
+/**
+ * get_command_path - get the path of a command
+ * @command: the command name
+ * Return: currently NULL (WIP).
+ */
+char *get_command_path(char *command)
+{
+	char *path_env = getenv("PATH");
+
+	if (path_env == NULL || command == NULL)
+	{
+		return (NULL);
+	}
+
+	return (NULL);
+}
+
 
 /**
  * execute_command - responsible for executing a command
@@ -125,8 +143,6 @@ int main(int argc, char *argv[])
 				execute_command(args, argv[0]);
 			free2darr(args);
 			free(args);
-			if (!interactive)
-				_sputs("#cisfun$ ");
 		}
 	}
 	else
