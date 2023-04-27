@@ -42,10 +42,8 @@ int charcount(char *str, int i)
 	int count;
 
 	count = 0;
-	while (str[i] != ' ' && str[i] != '\t')
+	while (str[i] != ' ' && str[i] != '\t' && str[i] != '\0' && str[i] != 10)
 	{
-		if (str[i] == '\0' || str[i] == 10)
-			break;
 		count++;
 		i++;
 	}
