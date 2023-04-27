@@ -17,9 +17,9 @@ int words_count(char *str)
 		if (str[i] == ' ' || str[i] == '\t')
 		{
 			k++;
-			if (str[i - 1] == ' ' || str[i - 1] == '\t')
+			if (i > 0 && (str[i - 1] == ' ' || str[i - 1] == '\t'))
 			{
-				if (str[i + 1] == '\0')
+				if (str[i + 1] == '\0' || str[i + 1] == '\n')
 					k--;
 				k--;
 			}
