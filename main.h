@@ -15,7 +15,7 @@ extern char **environ;
 int _putchar(char c);
 void _puts(char *s);
 void _sputs(char *s);
-char *read_commands();
+char *read_commands(int status);
 char **_strsplit(char *s);
 int execute_command(char **args, char *prog_name);
 void free2darr(char **arr);

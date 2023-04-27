@@ -2,10 +2,10 @@
 
 /**
  * read_commands - Read commands line by line fromt he stdin
- *
+ * @status: previous status code
  * Return: string containing the first line.
  */
-char *read_commands()
+char *read_commands(int status)
 {
 	char *line = NULL;
 	size_t bufsize = 0;
@@ -46,7 +46,7 @@ char *read_commands()
 	if (is_exit == 1)
 	{
 		free(line);
-		exit(0);
+		exit(status);
 	}
 	return (line);
 }
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
 		{
 			if (interactive)
 				_sputs("#cisfun$ ");
-			line = read_commands();
+			line = read_commands(status);
 			if (!line)
 			{
 				if (interactive)
@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		line = read_commands();
+		line = read_commands(status);
 		if (!line)
 			return (1);
 		args = _strsplit(line);
