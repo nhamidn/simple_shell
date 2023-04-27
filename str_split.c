@@ -74,7 +74,7 @@ char **_strsplit(char *s)
 		if (s[i] != ' ' && s[i] != '\t')
 		{
 			k = 0;
-			st[j] = malloc(sizeof(char) * charcount(s, i));
+			st[j] = malloc(sizeof(char) * charcount(s, i) + 1);
 			if (st[j] == NULL)
 				return (NULL);
 			while (s[i] != ' ' && s[i] != '\t' && s[i] != '\0' && s[i] != 10)
