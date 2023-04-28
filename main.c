@@ -78,36 +78,36 @@ int execute_command(char **args, char *prog_name)
 {
 	pid_t pid;
 	int status = 0;
-	char *paths, *path;
+	char *new_path = NULL;
 
 	if (args[0] == NULL)
 		return (1);
-	if (access(args[0], X_OK) == -1)
-	{
-		paths = get_path_env();
-		path = strtok(paths, ":");
-		while (path != NULL)
-		{
-			path =  strtok(NULL, ":");
-		}
-	}
+	new_path = get_new_path(args[0]);
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(args[0], args, environ) == -1)
-			perror(prog_name);
+		if (new_path != NULL)
+		{
+			if (execve(new_path, args, environ) == -1)
+				perror(prog_name);
+		}
+		else
+		{
+			if (execve(args[0], args, environ) == -1)
+				perror(prog_name);
+		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
-	{
 		perror("fork error");
-	}
 	else
 	{
 		do {
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
+	if (new_path != NULL)
+		free(new_path);
 	return (WEXITSTATUS(status));
 }
 
