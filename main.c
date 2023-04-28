@@ -78,16 +78,24 @@ int execute_command(char **args, char *prog_name)
 {
 	pid_t pid;
 	int status = 0;
+	char *paths, *path;
 
 	if (args[0] == NULL)
 		return (1);
+	if (access(args[0], X_OK) == -1)
+	{
+		paths = get_path_env();
+		path = strtok(paths, ":");
+		while (path != NULL)
+		{
+			path =  strtok(NULL, ":");
+		}
+	}
 	pid = fork();
 	if (pid == 0)
 	{
 		if (execve(args[0], args, environ) == -1)
-		{
 			perror(prog_name);
-		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)

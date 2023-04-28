@@ -16,6 +16,7 @@ int _putchar(char c);
 void _puts(char *s);
 void _sputs(char *s);
 int _strcmp(char *s1, char *s2);
+char *get_path_env();
 void print_env(void);
 char *read_commands(int status);
 char **_strsplit(char *s);
