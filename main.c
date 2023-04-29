@@ -7,43 +7,20 @@
  */
 char *read_commands(int status)
 {
-	char *line = NULL, ex[] = "exit";
+	char *line = NULL, **args = NULL;
 	size_t bufsize = 0;
-	int i = 0, j = 0, is_exit = -1;
 
 	if (getline(&line, &bufsize, stdin) == -1)
 	{
 		free(line);
 		return (NULL);
 	}
-	while (line[i] != '\0' && line[i] != 10)
-	{
-		if (line[i] == ex[0] && is_exit == -1)
-		{
-			is_exit = 1;
-			j = 0;
-			while (ex[j] != '\0')
-			{
-				if (ex[j] != line[i + j])
-				{
-					is_exit = 0;
-					break;
-				}
-				j++;
-			}
-			i += j;
-		}
-		if (line[i] != ' ' && line[i] != '\t' &&
-				line[i] != 10 && is_exit == 1 && line[i] != '\0')
-		{
-			is_exit = 0;
-			break;
-		}
-		i++;
-	}
-	if (is_exit == 1)
+	args = _strsplit(line);
+	if (_strcmp(args[0], "exit") == 0)
 	{
 		free(line);
+		free2darr(args);
+		free(args);
 		exit(status);
 	}
 	return (line);
