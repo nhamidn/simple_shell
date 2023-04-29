@@ -101,13 +101,13 @@ char *get_path_env()
 	while (env_copy[i] != NULL)
 	{
 		path = _dsplit(env_copy[i], '=');
-		free2darr(env_copy);
-		free(env_copy);
 		if (_strcmp(path[0], "PATH") == 0)
 		{
 			path_value = strdup(path[1]);
 			free2darr(path);
 			free(path);
+			free2darr(env_copy);
+			free(env_copy);
 			return (path_value);
 		}
 		free2darr(path);
