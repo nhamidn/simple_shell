@@ -15,6 +15,7 @@ extern char **environ;
 int _putchar(char c);
 void _puts(char *s);
 void _sputs(char *s);
+void _print_not_found(char *prog_name, char *cmd);
 int _strlen(char *s);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *s);
