@@ -18,6 +18,7 @@ void _sputs(char *s);
 int _strlen(char *s);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *s);
+char **_dsplit(char *str, char d);
 char *append_to_path(char *path, char *cmd);
 char *get_new_path(char *cmd);
 char *get_path_env();

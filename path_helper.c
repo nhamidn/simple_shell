@@ -7,20 +7,30 @@
  */
 char *get_new_path(char *cmd)
 {
-	char *new_path = NULL, *paths, *path;
+	char *new_path = NULL, *paths, **path = NULL;
+	int i;
 
 	if (access(cmd, X_OK) == -1)
 	{
 		paths = get_path_env();
-		path = strtok(paths, ":");
-		while (path != NULL)
+		path = _dsplit(paths, ':');
+		free(paths);
+		i = 0;
+		while (path[i] != NULL)
 		{
-			new_path = append_to_path(path, cmd);
+			new_path = append_to_path(path[i], cmd);
 			if (access(new_path, X_OK) == -1)
+			{
 				free(new_path);
+				new_path = NULL;
+			}
 			else
+			{
+				free2darr(path);
+				free(path);
 				break;
-			path =  strtok(NULL, ":");
+			}
+			i++;
 		}
 
 	}
@@ -72,7 +82,7 @@ char *append_to_path(char *path, char *cmd)
 char *get_path_env()
 {
 	int i = 0, num_vars = 0;
-	char *path = NULL, **env_copy = NULL;
+	char **path = NULL, **env_copy = NULL, *path_value = NULL;
 
 	while (environ[num_vars] != NULL)
 		num_vars++;
@@ -90,13 +100,19 @@ char *get_path_env()
 	i = 0;
 	while (env_copy[i] != NULL)
 	{
-		path = strtok(env_copy[i], "=");
-		if (_strcmp(path, "PATH") == 0)
+		path = _dsplit(env_copy[i], '=');
+		if (_strcmp(path[0], "PATH") == 0)
 		{
-			path = strtok(NULL, "=");
-			return (path);
+			path_value = strdup(path[1]);
+			free2darr(path);
+			free(path);
+			return (path_value);
 		}
+		free2darr(path);
+		free(path);
 		i++;
 	}
+	free2darr(env_copy);
+	free(env_copy);
 	return (NULL);
 }
