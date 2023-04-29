@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include <errno.h>
 
 #define BUFFER_SIZE 1024
 
@@ -17,10 +16,7 @@ int _putchar(char c);
 void _puts(char *s);
 void _sputs(char *s);
 void _print_not_found(char *prog_name, char *cmd);
-int _atoi(char *s);
 int _strlen(char *s);
-char *_strcpy(char *dest, char *src);
-char *_strcat(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *s);
 char **_dsplit(char *str, char d);

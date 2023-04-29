@@ -9,18 +9,10 @@
  */
 void _print_not_found(char *prog_name, char *cmd)
 {
-	char *err_msg = NULL;
-	int err_len = _strlen(prog_name) + _strlen(cmd) + 17;
-
-	err_msg = malloc(sizeof(char) * (err_len + 1));
-	if (err_msg == NULL)
-		exit(EXIT_FAILURE);
-	_strcpy(err_msg, prog_name);
-	_strcat(err_msg, ": 1: ");
-	_strcat(err_msg, cmd);
-	_strcat(err_msg, ": not found\n");
-	write(STDERR_FILENO, err_msg, err_len);
-	free(err_msg);
+	_sputs(prog_name);
+	_sputs(": 1: ");
+	_sputs(cmd);
+	_puts(": not found");
 }
 
 /**
