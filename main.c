@@ -67,7 +67,8 @@ int execute_command(char **args, char *prog_name)
 	if (args[0] == NULL)
 		return (1);
 	new_path = get_new_path(args[0]);
-	if (new_path == NULL && access(args[0], X_OK) == -1)
+	if ((new_path == NULL && access(args[0], X_OK) == -1)
+		|| check_path_env() == -1)
 	{
 		_print_not_found(prog_name, args[0]);
 		return (127);

@@ -1,6 +1,30 @@
 #include "main.h"
 
 /**
+ * check_path_env - check if PATH env var is available.
+ *
+ * Return: 1 if available, otherwise 0.
+ */
+int check_path_env(void)
+{
+	int i = 0;
+	char **path = NULL;
+
+	while (environ[i] != NULL)
+	{
+		path = _dsplit(environ[i], '=');
+		if (_strcmp(path[0], "PATH") == 0)
+		{
+			free2darr(path);
+			return (1);
+		}
+		free2darr(path);
+		i++;
+	}
+	return (0);
+}
+
+/**
  * get_new_path - construct the path of the command.
  * @cmd: the command/
  * Return: pointer to new string.
