@@ -13,6 +13,8 @@ char *get_new_path(char *cmd)
 	if (access(cmd, X_OK) == -1)
 	{
 		paths = get_path_env();
+		if (paths == NULL)
+			return (NULL);
 		path = _dsplit(paths, ':');
 		free(paths);
 		i = 0;
@@ -27,7 +29,6 @@ char *get_new_path(char *cmd)
 			else
 			{
 				free2darr(path);
-				free(path);
 				break;
 			}
 			i++;
@@ -75,6 +76,18 @@ char *append_to_path(char *path, char *cmd)
 }
 
 /**
+ * free_arrays - free some arrays.
+ * @path: first array
+ * @env_copy: second array
+ * Return: Nothing (void function).
+ */
+void free_arrays(char **path, char **env_copy)
+{
+	free2darr(path);
+	free2darr(env_copy);
+}
+
+/**
  * get_path_env - get the PATH env var.
  *
  * Return: string with the value of PATH.
@@ -103,16 +116,18 @@ char *get_path_env()
 		path = _dsplit(env_copy[i], '=');
 		if (_strcmp(path[0], "PATH") == 0)
 		{
+			if (path[1] == NULL)
+			{
+				free2darr(path);
+				break;
+			}
 			path_value = strdup(path[1]);
-			free2darr(path);
-			free(path);
-			free2darr(env_copy);
-			free(env_copy);
+			free_arrays(path, env_copy);
 			return (path_value);
 		}
 		free2darr(path);
-		free(path);
 		i++;
 	}
+	free2darr(env_copy);
 	return (NULL);
 }

@@ -1,71 +1,55 @@
 #include "main.h"
 
+
+
 /**
  * read_commands - Read commands line by line fromt he stdin
  * @status: previous status code
+ * @prog_name: name of the program
  * Return: string containing the first line.
  */
-char *read_commands(int status)
+char *read_commands(int status, char *prog_name)
 {
-	char *line = NULL, ex[] = "exit";
+	char *line = NULL, **args;
 	size_t bufsize = 0;
-	int i = 0, j = 0, is_exit = -1;
+	int status_code;
 
 	if (getline(&line, &bufsize, stdin) == -1)
 	{
 		free(line);
 		return (NULL);
 	}
-	while (line[i] != '\0' && line[i] != 10)
+	args = _strsplit(line);
+	if (args[0] != NULL)
 	{
-		if (line[i] == ex[0] && is_exit == -1)
+		if (_strcmp(args[0], "exit") == 0)
 		{
-			is_exit = 1;
-			j = 0;
-			while (ex[j] != '\0')
+			status_code = status;
+			if (args[1] != NULL)
 			{
-				if (ex[j] != line[i + j])
+				if (_issdigit(args[1]) == 1)
 				{
-					is_exit = 0;
-					break;
+					status_code = _atoi(args[1]);
+					if (status_code < 0)
+					{
+						_print_illegal_num(prog_name, args[0], args[1]);
+						status_code = 2;
+					}
 				}
-				j++;
+				else
+				{
+					_print_illegal_num(prog_name, args[0], args[1]);
+					status_code = 2;
+				}
 			}
-			i += j;
+			free2darr(args);
+			free(line);
+			exit(status_code);
 		}
-		if (line[i] != ' ' && line[i] != '\t' &&
-				line[i] != 10 && is_exit == 1 && line[i] != '\0')
-		{
-			is_exit = 0;
-			break;
-		}
-		i++;
 	}
-	if (is_exit == 1)
-	{
-		free(line);
-		exit(status);
-	}
+	free2darr(args);
 	return (line);
 }
-
-/**
- * get_command_path - get the path of a command
- * @command: the command name
- * Return: currently NULL (WIP).
- */
-char *get_command_path(char *command)
-{
-	char *path_env = getenv("PATH");
-
-	if (path_env == NULL || command == NULL)
-	{
-		return (NULL);
-	}
-
-	return (NULL);
-}
-
 
 /**
  * execute_command - responsible for executing a command
@@ -130,6 +114,7 @@ void free2darr(char **arr)
 		free(arr[i]);
 		i++;
 	}
+	free(arr);
 }
 /**
  * main - Entry point.
@@ -150,7 +135,7 @@ int main(int argc, char *argv[])
 		{
 			if (interactive)
 				_sputs("#cisfun$ ");
-			line = read_commands(status);
+			line = read_commands(status, argv[0]);
 			if (!line)
 			{
 				if (interactive)
@@ -170,7 +155,6 @@ int main(int argc, char *argv[])
 					status = execute_command(args, argv[0]);
 			}
 			free2darr(args);
-			free(args);
 		}
 	}
 
