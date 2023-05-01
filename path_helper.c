@@ -27,12 +27,10 @@ char *get_new_path(char *cmd)
 				new_path = NULL;
 			}
 			else
-			{
-				free2darr(path);
 				break;
-			}
 			i++;
 		}
+		free2darr(path);
 
 	}
 	return (new_path);
